@@ -22,6 +22,16 @@ def call(Map pipelineParams) {
             SONAR_TOKEN  = credentials('sonar_creds')
             DOCKER_HUB = "docker.io/i27devopsb6"
             DOCKER_CREDS = credentials('dockerhub_creds')
+
+            // Kubernetes DEV cluster details
+            DEV_CLUSTER_NAME = "i27-cluster"
+            DEV_CLUSTER_ZONE = "us-central1-c"
+            DEV_PROJECT_ID = "silver-tempo-455118-a5"
+
+            // Kuberenetes TEST cluster details
+            TST_CLUSTER_NAME = "i27-cluster"
+            TST_CLUSTER_ZONE = "us-central1-c"
+            TST_PROJECT_ID = "silver-tempo-455118-a5"
         }
         parameters {
             choice(name: 'scanOnly',
@@ -59,7 +69,7 @@ def call(Map pipelineParams) {
                 steps {
                     script {
                         // This is a login method to connect to GCP
-                        k8s.auth_login()
+                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
                     }
                 }
             }
