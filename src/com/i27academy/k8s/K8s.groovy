@@ -8,10 +8,13 @@ class K8s {
 
 
     // write all the methods here 
-    def auth_login(){
+    def auth_login(clusterName, zone, projectID ){
         jenkins.sh """
             echo "****************** Entering into kubernetes Authentication/login method ******************"
             gcloud compute instances list
+            echo "****************** Create the config file for the deployments *******************"
+            gcloud container clusters get-credentials $clusterName --zone $zone --project $projectID
+            kubectl get nodes
         """
     }
 }
