@@ -10,6 +10,8 @@ def call(Map pipelineParams) {
             label 'k8s-slave'
         }
         environment {
+            // testing for manifest 
+            APPLICATION_NAME = "${pipelineParams.appName}"
             // Kubernetes DEV cluster details
             DEV_CLUSTER_NAME = "i27-cluster"
             DEV_CLUSTER_ZONE = "us-central1-c"
@@ -29,6 +31,7 @@ def call(Map pipelineParams) {
         stages {
             stage('Authentication') {
                 steps {
+                     echo "************ In Build Stage for ${env.APPLICATION_NAME}  ************"
                     script {
                         k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
                     }
