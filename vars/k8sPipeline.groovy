@@ -138,6 +138,7 @@ def call(Map pipelineParams) {
                 }
                 steps {
                     script {
+                        //
                         imageValidation().call()
                         // dockerDeploy(env, port)
                         dockerDeploy('dev','5761').call()
@@ -207,6 +208,8 @@ def call(Map pipelineParams) {
         }
     }
 
+
+}
     def buildApp() {
         return{
             echo "Building ${env.APPLICATION_NAME} Application"
@@ -262,4 +265,3 @@ def call(Map pipelineParams) {
 
         }
     }
-}
