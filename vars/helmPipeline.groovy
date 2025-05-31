@@ -241,6 +241,20 @@ def call(Map pipelineParams) {
                         cleanWs()
                     }
                 }
+            }
+
+            post {
+                always {
+                    echo "Cleaning up the i27-shared-lib directory"
+                    script {
+                        def sharedLibDir = "${workspace}/i27-shared-lib"
+                        if (fileExists(sharedLibDir)) {
+                            echo "Deleting shared library directory: ${sharedLibDir}"
+                            sh "rm -rf ${sharedLibDir}"
+                        } else {
+                            echo "Shared library directory does not exist: ${sharedLibDir}, seems already cleaned up."
+                    }
+                }
             }   
         }
     }
