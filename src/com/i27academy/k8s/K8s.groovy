@@ -30,9 +30,10 @@ class K8s {
     // Helm Deployments
     def k8sHelmChartDeploy(appName, env, namespace){
         jenkins.sh """
+            echo "********** List of file available **********
+            ls -la 
             echo "****************** Entering into Helm Chart Deployment method ******************"
             echo "******************* Deploying the Helm Chart ******************"
-
             # Verify if helm chart exists
             if helm list -n $namespace | grep -q ${appName}-${env}-chart ; then
                 echo "This Chart Exists"
