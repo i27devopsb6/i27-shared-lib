@@ -42,7 +42,7 @@ class K8s {
     }
 
     // Helm Deployments
-    def k8sHelmChartDeploy(appName, env, namespace){
+    def k8sHelmChartDeploy(appName, env, helmChartPath, namespace){
         jenkins.sh """
             echo "****************** Entering into Helm Chart Deployment method ******************"
             echo "******************* Deploying the Helm Chart ******************"
@@ -54,7 +54,7 @@ class K8s {
             else 
                 echo "This Chart does not exist, Creating a new one"
                 echo "****************** Installing the Helm Chart ******************"
-                helm install ${appName}-${env}-chart -f .cicd/helm_values/values_${env} chart -n ${namespace}
+                helm install ${appName}-${env}-chart -f .cicd/helm_values/values_${env}.yaml ${helmChartPath} -n ${namespace}
             fi
         """
     }

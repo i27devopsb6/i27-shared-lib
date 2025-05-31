@@ -51,6 +51,9 @@ def call(Map pipelineParams) {
             STG_ENV = "stage"
             PRD_ENV = "prod"
 
+            // Chart path details 
+            HELM_CHART_PATH = "${workspace}/i27-shared-lib/chart"
+            ///home/rama/jenkins/workspace/i27-eureka_master
         }
         parameters {
             choice(name: 'scanOnly',
@@ -167,7 +170,7 @@ def call(Map pipelineParams) {
                         imageValidation().call()
 
                         // DEploy using Helm Charts
-                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.DEV_ENV}", "${env.DEV_NAMESPACE}")                        
+                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.DEV_ENV}", "${HELM_CHART_PATH}", "${env.DEV_NAMESPACE}")                        
                     }
                 }
             }
