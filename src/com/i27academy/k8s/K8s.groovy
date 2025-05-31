@@ -50,7 +50,7 @@ class K8s {
             if helm list -n $namespace | grep -q ${appName}-${env}-chart ; then
                 echo "This Chart Exists"
                 echo "****************** Upgrading the Helm Chart ******************"
-                helm upgrade **********************
+                helm upgrade ${appName}-${env}-chart -f .cicd/helm_values/values_${env}.yaml --set image.tag=${imageTag} ${helmChartPath} -n ${namespace}
             else 
                 echo "This Chart does not exist, Creating a new one"
                 echo "****************** Installing the Helm Chart ******************"
