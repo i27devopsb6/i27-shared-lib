@@ -32,6 +32,19 @@ def call(Map pipelineParams) {
             TST_CLUSTER_NAME = "i27-cluster"
             TST_CLUSTER_ZONE = "us-central1-c"
             TST_PROJECT_ID = "silver-tempo-455118-a5"
+
+            //Namespace definition
+            DEV_NAMESPACE = "cart-dev-ns" // eureka-dev, user-dev, product-dev, clothing-dev
+            TST_NAMESPACE = "cart-tst-ns" // eureka-tst, user-tst, product-tst, clothing-tst
+            STG_NAMESPACE = "cart-stg-ns"
+            PRD_NAMESPACE = "cart-prd-ns"
+
+            //File name for the deployment
+            K8S_DEV_FILE = "k8s_dev.yaml"
+            K8S_TST_FILE = "k8s_tst.yaml"
+            K8S_STG_FILE = "k8s_stg.yaml"
+            K8S_PRD_FILE = "k8s_prd.yaml"
+
         }
         parameters {
             choice(name: 'scanOnly',
@@ -114,16 +127,6 @@ def call(Map pipelineParams) {
                     }
                 }
             }
-            // stage ('Build Format') {
-            //     steps {
-            //         // Existing: i27-eureka-0.0.1-SNAPSHOT.jar
-            //         // Desination: i27-eureka-BUILD_NUMBER-branchName.jar
-            //         script {
-            //             echo "Testing JAR Source: i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}"
-            //             echo "Testing Jar Destination: i27-${env.APPLICATION_NAME}-${currentBuild.number}-${BRANCH_NAME}.${env.POM_PACKAGING}"
-            //         }
-            //     }
-            // }
             stage ('Docker Build and Push') {
                 when {
                     anyOf {
@@ -148,10 +151,14 @@ def call(Map pipelineParams) {
                 }
                 steps {
                     script {
-                        //
+                        // This is a login method to connect to GCP
+                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
+                        
+                        // This is a method to validate the docker image 
                         imageValidation().call()
-                        // dockerDeploy(env, port)
-                        dockerDeploy('dev','5761').call()
+
+                        // This is a method to deploy the application to k8s cluster in dev env
+                        k8s.k8sdeploy("${env.K8S_DEV_FILE}", "${env.DEV_NAMESPACE}")
                     }
                 }
             }

@@ -18,6 +18,14 @@ class K8s {
         """
     }
 
+    // Method to deploy applications 
+    def k8sdeploy(fileName, namespace){
+        jenkins.sh"""
+            echo "Deploying into k8s cluster"
+            kubectl apply -f ./.cicd/${fileName} -n ${namespace} 
+        """
+    }
+
 
     // Namespace Creation 
     def namespace_creation(namespace_name){
