@@ -253,6 +253,7 @@ def call(Map pipelineParams) {
                             sh "rm -rf ${sharedLibDir}"
                         } else {
                             echo "Shared library directory does not exist: ${sharedLibDir}, seems already cleaned up."
+                        }
                     }
                 }
             }   
