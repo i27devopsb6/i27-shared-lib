@@ -84,11 +84,10 @@ def call(Map pipelineParams) {
             //string(name: 'CHANGE_TICKET', defaultValue: 'ENTER_CHANGE_TICKET', description: '')
         }
         stages {
-            stage('AuthTest'){
+            stage('CheckoutSharedLib') {
                 steps {
-                    script {
-                        // This is a login method to connect to GCP
-                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
+                    script{
+                        k8s.gitClone()
                     }
                 }
             }

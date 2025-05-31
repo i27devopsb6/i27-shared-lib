@@ -27,11 +27,23 @@ class K8s {
         """
     }
 
+    // Clone the shared library
+    def gitClone(){
+        jenkins.sh """
+            echo "****************** Entering into git clone method ******************"
+            echo "****************** Cloning the shared library ******************"
+            git clone -b main https://github.com/i27devopsb6/i27-shared-lib.git
+            echo "****************** Cloning the shared library completed ******************"
+            echo "****************** Listing the files in the current directory ******************"
+            ls -la
+            echo "****************** Listing the files in the shared Library ******************"
+            ls -la
+        """
+    }
+
     // Helm Deployments
     def k8sHelmChartDeploy(appName, env, namespace){
         jenkins.sh """
-            echo "********** List of file available **********"
-            ls -la 
             echo "****************** Entering into Helm Chart Deployment method ******************"
             echo "******************* Deploying the Helm Chart ******************"
             # Verify if helm chart exists
