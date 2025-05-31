@@ -170,7 +170,7 @@ def call(Map pipelineParams) {
                         imageValidation().call()
 
                         // DEploy using Helm Charts
-                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.DEV_ENV}", "${HELM_CHART_PATH}", "${env.DEV_NAMESPACE}")                        
+                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.DEV_ENV}", "${HELM_CHART_PATH}", "${GIT_COMMIT}" ,"${env.DEV_NAMESPACE}")                        
                     }
                 }
             }
