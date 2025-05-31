@@ -37,7 +37,7 @@ class K8s {
             echo "****************** Listing the files in the current directory ******************"
             ls -la
             echo "****************** Listing the files in the shared Library ******************"
-            ls -la
+            ls -la i27-shared-lib
         """
     }
 
