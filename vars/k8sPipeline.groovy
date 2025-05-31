@@ -151,6 +151,10 @@ def call(Map pipelineParams) {
                 }
                 steps {
                     script {
+
+                        // this variable is used to get the docker image 
+                        def docker_image  = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:$GIT_COMMIT"
+
                         // This is a login method to connect to GCP
                         k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
                         
@@ -158,7 +162,7 @@ def call(Map pipelineParams) {
                         imageValidation().call()
 
                         // This is a method to deploy the application to k8s cluster in dev env
-                        k8s.k8sdeploy("${env.K8S_DEV_FILE}", "${env.DEV_NAMESPACE}")
+                        k8s.k8sdeploy("${env.K8S_DEV_FILE}", docker_image, "${env.DEV_NAMESPACE}")
                     }
                 }
             }
