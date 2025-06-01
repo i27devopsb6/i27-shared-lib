@@ -5,9 +5,11 @@ metadata:
   labels:
     app: {{ .Values.fullname }}
 spec:
-  type: NodePort
+  type: {{ .Values.service.type }} # Change to NodePort or LoadBalancer if needed
   ports:
   - port: 80 # this is port on which service is running
     targetPort: {{ .Values.targetPort }} # port where container is running
   selector:
     app: {{ .Values.fullname }}
+
+
