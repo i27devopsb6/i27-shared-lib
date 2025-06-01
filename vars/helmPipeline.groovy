@@ -184,9 +184,17 @@ def call(Map pipelineParams) {
                 }
                 steps {
                     script {
+                        // this variable is used to get the docker image 
+                        def docker_image  = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:$GIT_COMMIT"
+
+                        // This is a login method to connect to GCP
+                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
+                        
+                        // This is a method to validate the docker image 
                         imageValidation().call()
-                        echo "Deploying to Test env"
-                        dockerDeploy('tst','6761').call()
+
+                        // DEploy using Helm Charts
+                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.TST_ENV}", "${HELM_CHART_PATH}", "${GIT_COMMIT}" ,"${env.TST_NAMESPACE}")
                     }
                 }
             }
@@ -207,9 +215,17 @@ def call(Map pipelineParams) {
                 }
                 steps {
                     script {
+                        // this variable is used to get the docker image 
+                        def docker_image  = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:$GIT_COMMIT"
+
+                        // This is a login method to connect to GCP
+                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
+                        
+                        // This is a method to validate the docker image 
                         imageValidation().call()
-                        echo "Deploying to stg env"
-                        dockerDeploy('stg','7761').call()
+
+                        // DEploy using Helm Charts
+                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.STG_ENV}", "${HELM_CHART_PATH}", "${GIT_COMMIT}" ,"${env.STG_NAMESPACE}")
                     }
                 }
             }
@@ -229,8 +245,17 @@ def call(Map pipelineParams) {
                         input message: "Deploying ${env.APPLICATION_NAME} to production ?", ok: 'yes', submitter: 'ramsre,i27academy'
                     }
                     script {
-                        echo "Deploying to prod env"
-                        dockerDeploy('prd','8761').call()
+                        // this variable is used to get the docker image 
+                        def docker_image  = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:$GIT_COMMIT"
+
+                        // This is a login method to connect to GCP
+                        k8s.auth_login("${env.DEV_CLUSTER_NAME}", "${env.DEV_CLUSTER_ZONE}", "${env.DEV_PROJECT_ID}")
+                        
+                        // This is a method to validate the docker image 
+                        imageValidation().call()
+
+                        // DEploy using Helm Charts
+                        k8s.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.PRD_ENV}", "${HELM_CHART_PATH}", "${GIT_COMMIT}" ,"${env.PRD_NAMESPACE}")
                     }
                 }
             }
