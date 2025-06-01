@@ -318,7 +318,7 @@ def call(Map pipelineParams) {
         return {
             echo "**************************************** Building Docker Image ****************************************"
             sh "cp ${workspace}/target/i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} ./.cicd"
-            sh "docker build --no-cache --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} -t ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:$GIT_COMMIT ./.cicd"
+            sh "docker build --no-cache --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} -t ${env.JFROG_DOCKER_REGISTRY}/${env.JFROG_DOCKER_REPO_NAME}/${env.APPLICATION_NAME}:$GIT_COMMIT ./.cicd"
             echo "**************************************** Docker Login ****************************************"
             sh "docker login -u ${JFROG_CREDS_USR} -p ${JFROG_CREDS_PSW} devopsb6.jfrog.io"
             echo "**************************************** Push Docker Image ****************************************"
