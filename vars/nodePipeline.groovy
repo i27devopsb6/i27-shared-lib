@@ -2,8 +2,6 @@ import com.i27academy.k8s.K8s;
 
 def call(Map pipelineParams) {
      
-    // An instance of the class Docker is created
-    Docker docker = new Docker(this)
     K8s k8s = new K8s(this)
     pipeline {
         agent {
